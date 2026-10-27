@@ -36,6 +36,7 @@ python3 -B scripts/new_package.py --project-root "/absolute/path/to/project" --b
 - [上手教程：从输入到批准、增量修改](docs/quickstart.md)
 - [样例索引：轻量、标准、增量与完整路线](examples/README.md)
 - [可选软件领域风险提示](profiles/software-risks.md)
+- [可选 CI/CD 配套：Web＋服务器示例、部署与回滚准备](integrations/ci-cd/README.md)
 - [字段及机器检查边界](protocol/machine-contract.md)
 - [版本与兼容政策](docs/compatibility.md)
 - [贡献方式](CONTRIBUTING.md)、[安全报告](SECURITY.md)、[MIT 许可证](LICENSE)
@@ -44,6 +45,8 @@ python3 -B scripts/new_package.py --project-root "/absolute/path/to/project" --b
 
 统一运行 `python3 -B scripts/check_all.py`：检查仓库、回归测试和所有落盘示例。单个项目包使用 `scripts/validate_project_package.py --project-root <绝对根目录> --package-dir <项目内相对路径>`。标准/完整路线保留可直接阅读的图表，HTML 从来源生成，不能独立维护结论。
 
-CI 已在 Linux、macOS、Windows 和最低 Python 版本通过；最新提交以 [GitHub Actions](https://github.com/cbcraftlab/pre-development-framework/actions/workflows/validate.yml) 为准。Windows 验证当前格式，冻结 0.9 仅支持 POSIX，详见兼容政策。自动门只证明已实现的结构规则，不证明模型行为、业务语义、批准真实性或减少返工的效果。
+已发布候选基线的 CI 在 Linux、macOS、Windows 和最低 Python 版本通过；最新提交以 [GitHub Actions](https://github.com/cbcraftlab/pre-development-framework/actions/workflows/validate.yml) 为准。CI/CD 配套的本地证据与未验证项见 [配套验证记录](validation/ci-cd-optional-template.md)。Windows 验证当前格式，冻结 0.9 仅支持 POSIX，详见兼容政策。自动门只证明已实现的结构规则，不证明模型行为、业务语义、批准真实性或减少返工的效果。
 
 正式产物跟随目标项目，默认位置为 `docs/pre-development/<package-id>-<package-slug>/`。本仓库只保存规则、模板、合成示例和验证记录；更多说明见 [CHANGELOG](CHANGELOG.md)、[本版证据](validation/candidate-0.10.2-public-readiness.md)和[发布指南](docs/public-release.md)。
+
+CI/CD 配套需在目标项目内另行选择、适配和启用。模板位于 integrations 下，复制本框架不会启用项目发布；本仓库自身的 Actions 仍只检查框架。配套不改变 Development Ready 的终点或授予部署权限。

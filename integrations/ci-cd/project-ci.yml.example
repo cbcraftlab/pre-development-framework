@@ -1,0 +1,189 @@
+# Optional example only. Copy/adapt into an authorized target repository.
+# Go + Node.js + GHCR + Kubernetes are choices for this example, not framework rules.
+name: Project CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target after successful checks and image publishing
+        type: choice
+        options: [none, test, production]
+        default: none
+      production_confirmation:
+        description: For production only, type deploy-production; environment review is separate
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.target || 'none' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Restrict manual runs to main
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          SOURCE_REF: ${{ github.ref }}
+        run: test "$SOURCE_REF" = refs/heads/main
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+      - name: Go checks and tests
+        working-directory: server
+        run: |
+          go vet ./...
+          go test ./...
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: web/.node-version
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Web tests and build
+        working-directory: web
+        run: |
+          npm ci
+          npm run test:ci
+          npm run build
+      - name: PR build setup without registry credentials
+        if: github.event_name == 'pull_request'
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: PR Web Docker build
+        if: github.event_name == 'pull_request'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: web
+          file: web/Dockerfile
+          push: false
+      - name: PR Server Docker build
+        if: github.event_name == 'pull_request'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: server
+          file: server/Dockerfile
+          push: false
+
+  images:
+    name: Build images
+    needs: checks
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      web: ${{ steps.names.outputs.web }}@${{ steps.web.outputs.digest }}
+      server: ${{ steps.names.outputs.server }}@${{ steps.server.outputs.digest }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Image names
+        id: names
+        run: |
+          repo="${GITHUB_REPOSITORY,,}"
+          echo "web=ghcr.io/${repo}-web" >> "$GITHUB_OUTPUT"
+          echo "server=ghcr.io/${repo}-server" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Registry login on trusted main only
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Web
+        id: web
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: web
+          file: web/Dockerfile
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.names.outputs.web }}:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Build Server
+        id: server
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: server
+          file: server/Dockerfile
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.names.outputs.server }}:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Record published digests for release and rollback
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          WEB_IMAGE: ${{ steps.names.outputs.web }}@${{ steps.web.outputs.digest }}
+          SERVER_IMAGE: ${{ steps.names.outputs.server }}@${{ steps.server.outputs.digest }}
+        run: |
+          printf 'Commit: %s\n\nWeb: `%s`\n\nServer: `%s`\n' "$GITHUB_SHA" "$WEB_IMAGE" "$SERVER_IMAGE" >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Deploy selected environment
+    needs: images
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      ((github.event_name == 'push' && vars.ENABLE_TEST_DEPLOY == 'true') ||
+       (github.event_name == 'workflow_dispatch' && inputs.target != 'none'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: ${{ github.event_name == 'push' && 'test' || inputs.target }}
+    concurrency:
+      group: deployment-${{ github.event_name == 'push' && 'test' || inputs.target }}
+      cancel-in-progress: false
+    steps:
+      - name: Require deployment configuration
+        env:
+          KUBECTL_VERSION: ${{ vars.KUBECTL_VERSION }}
+          DEPLOY_ENV: ${{ github.event_name == 'push' && 'test' || inputs.target }}
+          ENABLE_PRODUCTION_DEPLOY: ${{ vars.ENABLE_PRODUCTION_DEPLOY }}
+          PRODUCTION_CONFIRMATION: ${{ inputs.production_confirmation }}
+        run: |
+          test -n "$KUBECTL_VERSION"
+          if [ "$DEPLOY_ENV" = production ]; then
+            test "$ENABLE_PRODUCTION_DEPLOY" = true
+            test "$PRODUCTION_CONFIRMATION" = deploy-production
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: azure/setup-kubectl@bda439f5f36b99b262ebdcd3613869bddb064c8e # v5.2.0
+        with:
+          version: ${{ vars.KUBECTL_VERSION }}
+      - name: Update exact digests, wait and smoke test
+        env:
+          DEPLOY_ENV: ${{ github.event_name == 'push' && 'test' || inputs.target }}
+          ENABLE_PRODUCTION_DEPLOY: ${{ vars.ENABLE_PRODUCTION_DEPLOY }}
+          PRODUCTION_CONFIRMATION: ${{ inputs.production_confirmation }}
+          RELEASE_SHA: ${{ github.sha }}
+          WEB_IMAGE: ${{ needs.images.outputs.web }}
+          SERVER_IMAGE: ${{ needs.images.outputs.server }}
+          KUBE_CONFIG_B64: ${{ secrets.KUBE_CONFIG_B64 }}
+          KUBE_NAMESPACE: ${{ vars.KUBE_NAMESPACE }}
+          WEB_DEPLOYMENT: ${{ vars.WEB_DEPLOYMENT }}
+          SERVER_DEPLOYMENT: ${{ vars.SERVER_DEPLOYMENT }}
+          WEB_CONTAINER: ${{ vars.WEB_CONTAINER }}
+          SERVER_CONTAINER: ${{ vars.SERVER_CONTAINER }}
+          SMOKE_URL: ${{ vars.SMOKE_URL }}
+        run: python3 .ci/deploy.py --execute
