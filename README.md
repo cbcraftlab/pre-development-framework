@@ -44,6 +44,6 @@ python3 -B scripts/new_package.py --project-root "/absolute/path/to/project" --b
 
 统一运行 `python3 -B scripts/check_all.py`：检查仓库、回归测试和所有落盘示例。单个项目包使用 `scripts/validate_project_package.py --project-root <绝对根目录> --package-dir <项目内相对路径>`。标准/完整路线保留可直接阅读的图表，HTML 从来源生成，不能独立维护结论。
 
-CI 配置覆盖 Linux、macOS、Windows 和最低 Python 版本；是否实际通过以 GitHub Actions 运行结果为准。自动门只证明已实现的结构规则，不证明模型行为、业务语义、批准真实性或减少返工的效果。
+CI 已在 Linux、macOS、Windows 和最低 Python 版本通过；最新提交以 [GitHub Actions](https://github.com/cbcraftlab/pre-development-framework/actions/workflows/validate.yml) 为准。Windows 验证当前格式，冻结 0.9 仅支持 POSIX，详见兼容政策。自动门只证明已实现的结构规则，不证明模型行为、业务语义、批准真实性或减少返工的效果。
 
 正式产物跟随目标项目，默认位置为 `docs/pre-development/<package-id>-<package-slug>/`。本仓库只保存规则、模板、合成示例和验证记录；更多说明见 [CHANGELOG](CHANGELOG.md)、[本版证据](validation/candidate-0.10.2-public-readiness.md)和[发布指南](docs/public-release.md)。
