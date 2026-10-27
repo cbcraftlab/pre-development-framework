@@ -4,6 +4,7 @@ import json
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from render_readable_package import build_html, split_table_row, render_inline
@@ -328,6 +329,14 @@ class CurrentPackageTests(unittest.TestCase):
         self.m['framework_version']='0.10.0-candidate.1'
         self.c['framework_version']='0.10.0-candidate.1'
         self.assertEqual(self.run_check(), [])
+
+    def test_windows_legacy_format_reports_explicit_migration_boundary(self):
+        self.assertEqual(self.run_check(), [])
+        self.m['framework_version']='0.9.0-candidate.5'
+        write_json(self.p/'package-manifest.json',self.m)
+        with patch('validate_project_package.sys.platform','win32'):
+            errors=validate_package(str(self.root),self.m['package_path'])
+        self.assertTrue(any('requires POSIX project_root' in error and 'migrate explicitly' in error for error in errors),errors)
 
     def test_manifest_symlink_escape(self):
         self.assertEqual(self.run_check(),[])

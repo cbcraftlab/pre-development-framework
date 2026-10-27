@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
@@ -357,6 +358,8 @@ def validate_package(project_root_raw, package_dir_raw):
     if not isinstance(raw, dict): return ['package manifest must be an object']
     version = raw.get('framework_version')
     if version == LEGACY_VERSION:
+        if sys.platform == 'win32':
+            return ['frozen 0.9 package format requires POSIX project_root; migrate explicitly to current format before Windows validation']
         from validate_legacy_package import validate_package as legacy
         return legacy(project_root_raw, package_dir_raw)
     if version not in SUPPORTED_CURRENT_VERSIONS:

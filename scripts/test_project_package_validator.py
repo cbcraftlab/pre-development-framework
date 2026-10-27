@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,6 +19,7 @@ META = (
 )
 
 
+@unittest.skipIf(os.name == 'nt', 'Frozen 0.9 format requires POSIX project_root; current-format Windows checks run separately')
 class ProjectPackageValidatorTests(unittest.TestCase):
     def make_project(self) -> tuple[tempfile.TemporaryDirectory[str], Path, Path, dict[str, object]]:
         holder = tempfile.TemporaryDirectory()
