@@ -1,0 +1,12 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "PROJECT-001",
+  "assignment_policy": "fixed",
+  "hard_constraints": [],
+  "preferences": [],
+  "team": [],
+  "suggested_changes": [],
+  "unknowns": [
+    "填写本项目人数、人员可用时间和用户确认职责；模型建议单独记录。"
+  ]
+}

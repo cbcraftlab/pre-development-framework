@@ -1,0 +1,62 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-F1",
+      "statement": "将当前任务列表导出成本地 UTF-8 CSV。",
+      "source_ids": [
+        "SRC-001"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "criterion": "给定空列表，输出只有表头的 UTF-8 CSV，返回成功且不访问网络。",
+      "method": "临时目录执行导出，对比文件字节与退出码。"
+    }
+  ],
+  "contracts": [],
+  "tasks": [
+    {
+      "id": "DEV-1",
+      "title": "导出本地任务列表",
+      "objective": "交付空列表也可用的 CSV 导出",
+      "scope": [
+        "本地导出入口、编码和空列表处理"
+      ],
+      "non_goals": [
+        "远程同步"
+      ],
+      "requirements": [
+        "REQ-F1"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ],
+      "contracts": [],
+      "depends_on": [],
+      "owner": "M1",
+      "responsibility": "implementation",
+      "collaborators": [],
+      "slice_id": "SLICE-1"
+    }
+  ],
+  "slices": [
+    {
+      "id": "SLICE-1",
+      "task_ids": [
+        "DEV-1"
+      ],
+      "readiness": "ready",
+      "blockers": [],
+      "conditions": [],
+      "authorized": false,
+      "integration_owner": "M1",
+      "acceptance_owner": "M1"
+    }
+  ],
+  "changes": []
+}

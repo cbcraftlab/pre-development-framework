@@ -1,0 +1,14 @@
+{
+  "project_id": "SAMPLE-PROJECT",
+  "package_id": "REQ-001",
+  "package_slug": "local-export",
+  "title": "新建本地任务列表导出工具",
+  "goal": "将用户输入的任务名称列表导出为 UTF-8 CSV，拒绝覆盖已有文件。",
+  "scope": ["本地输入、CSV 编码、空列表和目标冲突处理"],
+  "non_goals": ["远端同步、修改或删除其他文件"],
+  "acceptance": [
+    {"criterion": "含逗号的名称正确转义，空列表输出仅表头；目标已存在时拒绝且原文件不变。", "method": "临时目录分别核对 CSV 字节、退出码和冲突前后的原文件字节。"}
+  ],
+  "team": [],
+  "owner": ""
+}

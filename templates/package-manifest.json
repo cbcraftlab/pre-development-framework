@@ -1,0 +1,51 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "PROJECT-001",
+  "package_id": "REQ-001",
+  "package_slug": "requirement-short-name",
+  "package_version": "0.1.0",
+  "mode": "new",
+  "route": "standard",
+  "route_reason": "待按需求风险完成判定",
+  "baseline_status": "candidate",
+  "readiness": "not_assessed",
+  "development_scope": "none",
+  "package_path": "docs/pre-development/REQ-001-requirement-short-name",
+  "baseline_refs": [],
+  "source_policy": {
+    "inheritance_mode": "deny-unless-explicit",
+    "authoritative_sources": [
+      "SRC-001"
+    ],
+    "supporting_sources": [],
+    "excluded_sources": []
+  },
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "kind": "normative",
+      "locator": "待填写 PRD 地址或项目相对路径",
+      "revision": "待填写版本",
+      "checked_at": "待填写核验时间",
+      "scope": "待填写适用范围",
+      "invalidated_by": "待填写需要重查的变化"
+    }
+  ],
+  "authorized_work": [],
+  "entrypoints": [
+    "docs/pre-development/index.md"
+  ],
+  "primary_artifact": "development-ready.md",
+  "context_artifact": "project-context.json",
+  "plan_artifact": "delivery-plan.json",
+  "readable_artifact": "development-ready.html",
+  "complex_relationships": false,
+  "diagrams": [],
+  "clarification_closures": [],
+  "artifacts": [
+    "development-ready.md",
+    "development-ready.html",
+    "project-context.json",
+    "delivery-plan.json"
+  ]
+}

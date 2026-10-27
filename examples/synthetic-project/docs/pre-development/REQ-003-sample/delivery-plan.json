@@ -1,0 +1,72 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-F1",
+      "statement": "空列表导出新增明确提示，保留原文件与退出码语义。",
+      "source_ids": [
+        "SRC-001"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "criterion": "空列表导出仍只有表头、退出码成功，同时显示“暂无任务，已导出表头”。",
+      "method": "捕获 stdout 和文件字节，同基线比较。"
+    }
+  ],
+  "contracts": [],
+  "tasks": [
+    {
+      "id": "DEV-1",
+      "title": "补充空列表提示",
+      "objective": "解释空列表导出结果",
+      "scope": [
+        "空列表提示及相关回归"
+      ],
+      "non_goals": [
+        "修改文件格式或退出码"
+      ],
+      "requirements": [
+        "REQ-F1"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ],
+      "contracts": [],
+      "depends_on": [],
+      "owner": "M1",
+      "responsibility": "implementation",
+      "collaborators": [],
+      "slice_id": "SLICE-1"
+    }
+  ],
+  "slices": [
+    {
+      "id": "SLICE-1",
+      "task_ids": [
+        "DEV-1"
+      ],
+      "readiness": "ready",
+      "blockers": [],
+      "conditions": [],
+      "authorized": false,
+      "integration_owner": "M1",
+      "acceptance_owner": "M1"
+    }
+  ],
+  "changes": [
+    {
+      "kind": "changed",
+      "id": "REQ-F1",
+      "before": "导出仅表头文件，未要求提示",
+      "after": "保留文件语义并显示暂无任务，已导出表头",
+      "affected_tasks": [
+        "DEV-1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "SYNTHETIC-TASK-TOOL",
+  "package_id": "REQ-002",
+  "package_slug": "sample",
+  "package_version": "0.1.0",
+  "mode": "enhancement",
+  "route": "standard",
+  "route_reason": "合成存量展示接入：复用已核对的只读查询，不改变权限或写入语义",
+  "baseline_status": "candidate",
+  "readiness": "ready",
+  "development_scope": "none",
+  "package_path": "docs/pre-development/REQ-002-sample",
+  "baseline_refs": [
+    {
+      "package_id": "BASE-SYNTHETIC-EXPORT",
+      "version": "fixture-v1",
+      "locator": "synthetic-baseline.md",
+      "reused_items": [
+        "EXPORT-EMPTY"
+      ]
+    }
+  ],
+  "source_policy": {
+    "inheritance_mode": "deny-unless-explicit",
+    "authoritative_sources": [
+      "SRC-001"
+    ],
+    "supporting_sources": [
+      "SRC-002"
+    ],
+    "excluded_sources": []
+  },
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "kind": "normative",
+      "locator": "synthetic-prd.md",
+      "revision": "fixture-v1",
+      "checked_at": "2026-09-08",
+      "scope": "本地任务导出",
+      "invalidated_by": "输入字段、导出规则或输出格式发生变化"
+    },
+    {
+      "source_id": "SRC-002",
+      "kind": "observed",
+      "locator": "synthetic-interface.md",
+      "revision": "fixture-v1",
+      "checked_at": "2026-09-08",
+      "scope": "GET /tasks/export/status 的合成接口契约",
+      "invalidated_by": "响应字段或统计口径改变"
+    }
+  ],
+  "authorized_work": [],
+  "entrypoints": [
+    "docs/pre-development/index.md"
+  ],
+  "primary_artifact": "development-ready.md",
+  "context_artifact": "project-context.json",
+  "plan_artifact": "delivery-plan.json",
+  "readable_artifact": "development-ready.html",
+  "complex_relationships": false,
+  "diagrams": [],
+  "clarification_closures": [],
+  "artifacts": [
+    "development-ready.md",
+    "development-ready.html",
+    "project-context.json",
+    "delivery-plan.json",
+    "synthetic-prd.md",
+    "synthetic-interface.md",
+    "synthetic-baseline.md"
+  ]
+}

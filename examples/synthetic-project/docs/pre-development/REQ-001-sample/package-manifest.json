@@ -1,0 +1,52 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "SYNTHETIC-TASK-TOOL",
+  "package_id": "REQ-001",
+  "package_slug": "sample",
+  "package_version": "0.1.0",
+  "mode": "new",
+  "route": "light",
+  "route_reason": "合成样例：已知输入输出的本地导出功能",
+  "baseline_status": "candidate",
+  "readiness": "ready",
+  "development_scope": "none",
+  "package_path": "docs/pre-development/REQ-001-sample",
+  "baseline_refs": [],
+  "source_policy": {
+    "inheritance_mode": "deny-unless-explicit",
+    "authoritative_sources": [
+      "SRC-001"
+    ],
+    "supporting_sources": [],
+    "excluded_sources": []
+  },
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "kind": "normative",
+      "locator": "synthetic-prd.md",
+      "revision": "fixture-v1",
+      "checked_at": "2026-09-08",
+      "scope": "本地任务导出",
+      "invalidated_by": "输入字段、导出规则或输出格式发生变化"
+    }
+  ],
+  "authorized_work": [],
+  "entrypoints": [
+    "docs/pre-development/index.md"
+  ],
+  "primary_artifact": "development-ready.md",
+  "context_artifact": "project-context.json",
+  "plan_artifact": "delivery-plan.json",
+  "readable_artifact": "development-ready.html",
+  "complex_relationships": false,
+  "diagrams": [],
+  "clarification_closures": [],
+  "artifacts": [
+    "development-ready.md",
+    "development-ready.html",
+    "project-context.json",
+    "delivery-plan.json",
+    "synthetic-prd.md"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-F1",
+      "statement": "展示既有任务导出状态，明确空数据和失败反馈。",
+      "source_ids": [
+        "SRC-001",
+        "SRC-002"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "criterion": "状态 empty 显示暂无任务；请求失败显示获取失败及重试，重试成功更新状态。",
+      "method": "使用契约样本模拟空响应、失败与重试成功，核对界面文案和请求次数。"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "CON-1",
+      "owner": "M1",
+      "state": "confirmed",
+      "definition": "synthetic-interface.md：只读查询、empty 与失败语义。",
+      "evidence": "fixture-v1 合成记录；真实项目须替换为真实接口证据。"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "DEV-1",
+      "title": "展示任务导出状态",
+      "objective": "区分任务为空与接口失败",
+      "scope": [
+        "只读状态展示、失败重试"
+      ],
+      "non_goals": [
+        "远程同步"
+      ],
+      "requirements": [
+        "REQ-F1"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ],
+      "contracts": [
+        "CON-1"
+      ],
+      "depends_on": [],
+      "owner": "M1",
+      "responsibility": "frontend",
+      "collaborators": [],
+      "slice_id": "SLICE-1"
+    }
+  ],
+  "slices": [
+    {
+      "id": "SLICE-1",
+      "task_ids": [
+        "DEV-1"
+      ],
+      "readiness": "ready",
+      "blockers": [],
+      "conditions": [],
+      "authorized": false,
+      "integration_owner": "M1",
+      "acceptance_owner": "M2"
+    }
+  ],
+  "changes": []
+}

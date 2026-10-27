@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/pre-development-framework/development-task.schema.json",
+  "title": "Development Task Card",
+  "type": "object",
+  "required": [
+    "task_id", "title", "slice_id", "objective", "business_context", "preconditions", "scope",
+    "non_goals", "affected_modules", "affected_entries", "dependencies", "contract_requirements",
+    "expected_outcomes", "acceptance_criteria", "risk_notes", "integration_points", "unresolved_items",
+    "team_mapping", "implementation_autonomy"
+  ],
+  "properties": {
+    "task_id": { "type": "string", "pattern": "^DEV-" },
+    "title": { "type": "string" },
+    "slice_id": { "type": "string", "pattern": "^SLICE-" },
+    "objective": { "type": "string" },
+    "business_context": {
+      "type": "object",
+      "required": ["requirements", "rules", "flows"],
+      "properties": {
+        "requirements": { "type": "array" },
+        "rules": { "type": "array" },
+        "flows": { "type": "array" }
+      },
+      "additionalProperties": false
+    },
+    "preconditions": { "type": "array" },
+    "scope": { "type": "array" },
+    "non_goals": { "type": "array" },
+    "affected_modules": { "type": "array" },
+    "affected_entries": { "type": "array" },
+    "dependencies": { "type": "array" },
+    "contract_requirements": { "type": "array" },
+    "expected_outcomes": { "type": "array" },
+    "acceptance_criteria": { "type": "array" },
+    "risk_notes": { "type": "array" },
+    "integration_points": { "type": "array" },
+    "unresolved_items": { "type": "array" },
+    "team_mapping": {
+      "type": "object",
+      "required": ["owner", "collaborators", "capability_gaps"],
+      "properties": {
+        "owner": { "type": "string" },
+        "collaborators": { "type": "array" },
+        "capability_gaps": { "type": "array" }
+      },
+      "additionalProperties": false
+    },
+    "implementation_autonomy": {
+      "type": "object",
+      "required": ["model_skill_tool_choice", "internal_design"],
+      "properties": {
+        "model_skill_tool_choice": { "const": "developer-owned" },
+        "internal_design": { "const": "developer-owned-within-confirmed-boundaries" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

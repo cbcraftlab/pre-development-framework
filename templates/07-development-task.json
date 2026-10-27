@@ -1,0 +1,32 @@
+{
+  "task_id": "DEV-001",
+  "title": "",
+  "slice_id": "SLICE-001",
+  "objective": "",
+  "business_context": {
+    "requirements": [],
+    "rules": [],
+    "flows": []
+  },
+  "preconditions": [],
+  "scope": [],
+  "non_goals": [],
+  "affected_modules": [],
+  "affected_entries": [],
+  "dependencies": [],
+  "contract_requirements": [],
+  "expected_outcomes": [],
+  "acceptance_criteria": [],
+  "risk_notes": [],
+  "integration_points": [],
+  "unresolved_items": [],
+  "team_mapping": {
+    "owner": "",
+    "collaborators": [],
+    "capability_gaps": []
+  },
+  "implementation_autonomy": {
+    "model_skill_tool_choice": "developer-owned",
+    "internal_design": "developer-owned-within-confirmed-boundaries"
+  }
+}

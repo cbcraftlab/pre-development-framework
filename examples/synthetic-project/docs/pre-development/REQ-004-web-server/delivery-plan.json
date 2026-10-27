@@ -1,0 +1,115 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-F1",
+      "statement": "Web 端展示明确服务器结果，连接失败不显示成功。",
+      "source_ids": [
+        "SRC-001"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "criterion": "收到明确响应才展示相应结果；连接失败显示错误，不伪造成功。真实样本待确认。",
+      "method": "先核对契约样本，再分别验证页面与真实服务器，尚未执行。"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "CON-STATUS",
+      "owner": "M2",
+      "state": "proposed",
+      "definition": "development-ready.md 第5节：请求/结果/错误等字段待确认；未提供实际接口。",
+      "evidence": "synthetic-input.md 仅为抽象需求，无实现证据。"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "DEV-1",
+      "title": "澄清请求与结果契约",
+      "objective": "补足可验收材料，不执行真实业务",
+      "scope": [
+        "补齐真实目标、权限及错误/状态样本"
+      ],
+      "non_goals": [
+        "真实业务实现或部署"
+      ],
+      "requirements": [
+        "REQ-F1"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ],
+      "contracts": [
+        "CON-STATUS"
+      ],
+      "depends_on": [],
+      "owner": "M2",
+      "responsibility": "backend",
+      "collaborators": [],
+      "slice_id": "SLICE-1"
+    },
+    {
+      "id": "DEV-2",
+      "title": "准备页面对接验收",
+      "objective": "补足可验收材料，不执行真实业务",
+      "scope": [
+        "按确认契约准备正常与失败场景"
+      ],
+      "non_goals": [
+        "真实业务实现或部署"
+      ],
+      "requirements": [
+        "REQ-F1"
+      ],
+      "acceptance_ids": [
+        "AC-1"
+      ],
+      "contracts": [
+        "CON-STATUS"
+      ],
+      "depends_on": [
+        "DEV-1"
+      ],
+      "owner": "M1",
+      "responsibility": "frontend",
+      "collaborators": [],
+      "slice_id": "SLICE-2"
+    }
+  ],
+  "slices": [
+    {
+      "id": "SLICE-1",
+      "task_ids": [
+        "DEV-1"
+      ],
+      "readiness": "not_ready",
+      "blockers": [
+        "BLK-001：实际目标、契约和验收样本不足"
+      ],
+      "conditions": [],
+      "authorized": false,
+      "integration_owner": "M2",
+      "acceptance_owner": "M1"
+    },
+    {
+      "id": "SLICE-2",
+      "task_ids": [
+        "DEV-2"
+      ],
+      "readiness": "not_ready",
+      "blockers": [
+        "BLK-001：实际目标、契约和验收样本不足"
+      ],
+      "conditions": [],
+      "authorized": false,
+      "integration_owner": "M2",
+      "acceptance_owner": "M1"
+    }
+  ],
+  "changes": []
+}

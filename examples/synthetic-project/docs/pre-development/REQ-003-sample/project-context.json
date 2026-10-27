@@ -1,0 +1,23 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "SYNTHETIC-TASK-TOOL",
+  "assignment_policy": "fixed",
+  "hard_constraints": [],
+  "preferences": [],
+  "team": [
+    {
+      "member_id": "M1",
+      "confirmed_responsibilities": [
+        "implementation",
+        "review"
+      ],
+      "availability": "每周三天（合成输入）",
+      "capabilities": [
+        "CLI",
+        "testing"
+      ]
+    }
+  ],
+  "suggested_changes": [],
+  "unknowns": []
+}

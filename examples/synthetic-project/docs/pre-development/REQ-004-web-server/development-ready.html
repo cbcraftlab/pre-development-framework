@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'unsafe-inline'; img-src 'self' file: data: https: http:; base-uri 'none'; form-action 'none'">
+  <title>完整路线示意：某 Web 端与服务器</title>
+  <!-- predev-meta: framework_version=0.10.0-candidate.2; package_id=REQ-004; package_version=0.1.0; baseline_status=candidate; readiness=not_ready; development_scope=none -->
+  <!-- predev-derived-from: development-ready.md -->
+  <!-- predev-source-sha256: 26c139a798d9cdba3cd1f08346ec86687ac51e46852ababfa41f636f276143bb -->
+  <style>
+    :root { color-scheme: light dark; --bg:#f5f7fb; --paper:#fff; --text:#172033; --muted:#64748b; --line:#dbe3ef; --head:#eef4ff; --accent:#2563eb; --warn-bg:#fff7df; --warn-line:#f59e0b; --code:#eef2f7; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; line-height:1.72; }
+    .shell { display:grid; grid-template-columns:280px minmax(0,1fr); max-width:1680px; margin:0 auto; }
+    .toc { position:sticky; top:0; align-self:start; height:100vh; overflow:auto; padding:28px 22px; border-right:1px solid var(--line); background:var(--paper); }
+    .toc strong { display:block; margin-bottom:12px; }
+    .toc ul { list-style:none; padding:0; margin:0; }
+    .toc li { margin:3px 0; }
+    .toc .level-3 { padding-left:14px; font-size:13px; }
+    .toc a { color:var(--muted); text-decoration:none; }
+    .toc a:hover { color:var(--accent); }
+    main { min-width:0; margin:28px; padding:48px 54px 80px; background:var(--paper); border:1px solid var(--line); border-radius:16px; box-shadow:0 12px 34px rgba(15,23,42,.06); }
+    h1 { margin:0 0 26px; font-size:32px; line-height:1.25; }
+    h2 { margin:58px 0 18px; padding-bottom:10px; border-bottom:2px solid var(--line); font-size:25px; }
+    h3 { margin:36px 0 14px; font-size:20px; }
+    h4 { margin:26px 0 10px; font-size:17px; }
+    p { margin:10px 0; }
+    a { color:var(--accent); }
+    main img { max-width:100%; height:auto; }
+    code { padding:2px 6px; border-radius:5px; background:var(--code); font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em; }
+    pre { overflow:auto; padding:18px; border:1px solid var(--line); border-radius:10px; background:var(--code); }
+    pre code { padding:0; background:transparent; }
+    blockquote { margin:18px 0; padding:14px 18px; border-left:4px solid var(--warn-line); background:var(--warn-bg); border-radius:0 8px 8px 0; }
+    ul,ol { padding-left:26px; }
+    li { margin:4px 0; }
+    .table-wrap { width:100%; margin:18px 0 28px; overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+    table { width:100%; border-collapse:separate; border-spacing:0; font-size:14px; line-height:1.55; }
+    th { position:sticky; top:0; padding:11px 12px; text-align:left; vertical-align:top; background:var(--head); border-bottom:1px solid var(--line); white-space:nowrap; }
+    td { min-width:108px; padding:11px 12px; vertical-align:top; border-bottom:1px solid var(--line); }
+    tr:last-child td { border-bottom:0; }
+    tbody tr:nth-child(even) { background:color-mix(in srgb,var(--head) 35%,transparent); }
+    .diagram { margin:24px 0 34px; padding:16px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .diagram a { display:block; }
+    .diagram img { display:block; width:100%; height:auto; max-height:900px; object-fit:contain; }
+    figcaption { margin-top:10px; color:#475569; text-align:center; font-size:14px; }
+    .diagram-source { margin:-22px 0 30px; color:var(--muted); font-size:13px; }
+    .diagram-source summary { cursor:pointer; user-select:none; }
+    .diagram-source pre { margin-top:8px; }
+    @media (prefers-color-scheme:dark) {
+      :root { --bg:#0f172a; --paper:#111c30; --text:#e5edf8; --muted:#a7b4c7; --line:#30405a; --head:#192b49; --accent:#7db2ff; --warn-bg:#3a2d12; --warn-line:#fbbf24; --code:#1d293d; }
+      .diagram { background:#fff; }
+      tbody tr:nth-child(even) { background:#15223a; }
+    }
+    @media (max-width:980px) { .shell { display:block; } .toc { position:relative; height:auto; border-right:0; border-bottom:1px solid var(--line); } main { margin:12px; padding:28px 20px 60px; } h1 { font-size:27px; } h2 { font-size:22px; } }
+    @media print { body { background:#fff; } .shell { display:block; max-width:none; } .toc { display:none; } main { margin:0; padding:0; border:0; box-shadow:none; } .table-wrap { overflow:visible; } table { font-size:10px; } .diagram { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="toc" aria-label="目录"><strong>文档目录</strong><ul><li class="level-2"><a href="#0-身份-模式与结论">0. 身份、模式与结论</a></li>
+<li class="level-2"><a href="#1-来源与澄清">1. 来源与澄清</a></li>
+<li class="level-2"><a href="#2-目标-范围与非目标">2. 目标、范围与非目标</a></li>
+<li class="level-2"><a href="#3-行为-对象与状态">3. 行为、对象与状态</a></li>
+<li class="level-2"><a href="#4-能力与所有权">4. 能力与所有权</a></li>
+<li class="level-2"><a href="#5-通信与契约">5. 通信与契约</a></li>
+<li class="level-2"><a href="#6-架构-质量与裁剪">6. 架构、质量与裁剪</a></li>
+<li class="level-2"><a href="#7-切片-任务与依赖">7. 切片、任务与依赖</a></li>
+<li class="level-2"><a href="#8-联调与验收">8. 联调与验收</a></li>
+<li class="level-2"><a href="#9-决策-阻塞与授权">9. 决策、阻塞与授权</a></li>
+<li class="level-2"><a href="#10-追踪与适用视图">10. 追踪与适用视图</a></li>
+<li class="level-2"><a href="#11-自验与结论">11. 自验与结论</a></li>
+<li class="level-2"><a href="#structured-plan">结构化交付映射</a></li></ul></nav>
+    <main><h1 id="完整路线示意-某-web-端与服务器">完整路线示意：某 Web 端与服务器</h1>
+<blockquote>纯虚构的结构示意，只展示客户端与服务器如何登记边界、契约和未决事项，不含真实项目名称、接口、业务流程或数据。材料不完整，明确 not_ready，不授予开发权限。</blockquote>
+<h2 id="0-身份-模式与结论">0. 身份、模式与结论</h2>
+<p>项目 SYNTHETIC-TASK-TOOL；new + complete。因新请求状态、重复提交与连接中断的处理方式尚需定义，使用完整路线检查受影响链路。清单、context 与 plan 分别保存身份、团队和交付映射。</p>
+<h2 id="1-来源与澄清">1. 来源与澄清</h2>
+<p>SRC-001 为 synthetic-input.md，normative + authoritative；无真实实现证据。Q-001 已在虚构回答中确认：页面不能把连接失败显示为成功。该回答回写 REQ-F1、CON-STATUS 和 AC-1。</p>
+<p>BLK-001 仍开放：真实操作的目标、状态和验收规则未提供。不能由模型补出业务内容，再把结果设为 Ready。旧资料不继承，源文件不具有命令或修改授权。</p>
+<h2 id="2-目标-范围与非目标">2. 目标、范围与非目标</h2>
+<p>只示范 Web 页面请求服务器并展示状态的准备方式。非目标：具体业务功能、数据内容、内部架构、部署产品或人员排期。未知规则明确作为阻塞，后续项目须换成自己的实际材料。</p>
+<h2 id="3-行为-对象与状态">3. 行为、对象与状态</h2>
+<p>页面至少区分加载中、收到明确结果、请求失败；是否重试、是否幂等、服务端的真实终态均待确认。不猜测领域对象或业务状态机。</p>
+<p>FLOW-001：页面发送请求 → 服务器按确认契约返回 → 页面展示明确结果；连接失败进入错误展示，不伪造服务端结果。这是交互结构，不是业务流程。</p>
+<h2 id="4-能力与所有权">4. 能力与所有权</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>边界</th>
+<th>主责</th>
+<th>不负责</th>
+</tr></thead><tbody>
+<tr>
+<td>MOD-WEB</td>
+<td>页面输入与展示</td>
+<td>不绕过服务器直接修改私有数据</td>
+</tr>
+<tr>
+<td>MOD-SERVER</td>
+<td>接口与状态结果的定义</td>
+<td>不由客户端猜测服务端终态</td>
+</tr>
+</tbody></table></div>
+<p>数据对象、写入责任和信任边界按实际项目补齐；本例不编数据库模型。成员 M1/M2 是虚构职责，非实际员工或批准人。</p>
+<h2 id="5-通信与契约">5. 通信与契约</h2>
+<p>关系示意：</p>
+<figure class="diagram"><a href="architecture.svg"><img src="architecture.svg" alt="Web 端与服务器"></a><figcaption>Web 端与服务器</figcaption></figure>
+<details class="diagram-source"><summary>查看 Mermaid 图源码</summary><pre><code class="language-mermaid">flowchart LR
+  Web[MOD-WEB] --&gt;|COMM-001 / CON-STATUS 请求| Server[MOD-SERVER]
+  Server --&gt;|明确结果或错误| Web</code></pre></details>
+<div class="table-wrap"><table><thead><tr>
+<th>通信</th>
+<th>语义</th>
+<th>契约</th>
+<th>状态</th>
+</tr></thead><tbody>
+<tr>
+<td>COMM-001 / INT-001</td>
+<td>Web 请求服务器并展示结果</td>
+<td>CON-STATUS</td>
+<td>proposed</td>
+</tr>
+</tbody></table></div>
+<p>CON-STATUS 只登记需要确认的请求字段、结果、错误、身份及兼容语义；不提供或暗示真实 URL/Schema。超时、重试、重复请求副作用和可恢复性应按实际风险确认，相关任务维持未就绪。</p>
+<h2 id="6-架构-质量与裁剪">6. 架构、质量与裁剪</h2>
+<p>只声明两个逻辑边界，不强制微服务、数据库、消息中间件、语言、框架、模型或工具。性能目标、数据保留、安全规则和外部依赖没有证据时保持未知；是否适用不能靠模板勾选证明。</p>
+<h2 id="7-切片-任务与依赖">7. 切片、任务与依赖</h2>
+<p>DEV-1 澄清请求与结果契约；DEV-2 准备页面对接与异常验收，依赖 DEV-1。切片均 not_ready、authorized=false；清单无批准。计划只演示映射方式，不是已经可领取的开发任务。</p>
+<h2 id="8-联调与验收">8. 联调与验收</h2>
+<p>AC-1：收到明确响应才显示对应结果；连接失败显示错误而非成功。实际响应和错误样本待确认。模拟契约只能检查页面行为；真实服务器、身份与数据一致性另行验证，不能把 Mock 结果当接通。</p>
+<h2 id="9-决策-阻塞与授权">9. 决策、阻塞与授权</h2>
+<p>唯一已给定的虚构规则是“不把连接失败伪装成功”。其余业务内容完全省略；BLK-001 阻塞两切片及其后续开发。材料、批准和授权分开，本例不具备真实业务批准。</p>
+<h2 id="10-追踪与适用视图">10. 追踪与适用视图</h2>
+<p>REQ-F1 → FLOW-001 → MOD-WEB/MOD-SERVER → COMM-001/INT-001/CON-STATUS → DEV-1/DEV-2 → AC-1。</p>
+<p>来源、目标、行为、边界、数据、安全、质量、团队、依赖和验收已指明位置或缺失原因；缺失是阻塞，不冒充“不适用”。没有真实业务时，不新增无依据的数据、模块或时序细节。</p>
+<h2 id="11-自验与结论">11. 自验与结论</h2>
+<p>结构可校验，语义材料不完整。未执行独立复读、真实开发或产品验收，结论维持 candidate + not_ready + none。正式项目用自身需求补齐后，才重新评估材料与批准范围。</p><h2 id="structured-plan">结构化交付映射（由 delivery-plan.json 派生）</h2><h3>需求</h3><div class="table-wrap"><table><thead><tr><th>标识</th><th>需求行为</th><th>来源</th><th>验收</th></tr></thead><tbody><tr><td>REQ-F1</td><td>Web 端展示明确服务器结果，连接失败不显示成功。</td><td><ul><li>SRC-001</li></ul></td><td><ul><li>AC-1</li></ul></td></tr></tbody></table></div><h3>验收</h3><div class="table-wrap"><table><thead><tr><th>标识</th><th>验收标准</th><th>验证方式</th></tr></thead><tbody><tr><td>AC-1</td><td>收到明确响应才展示相应结果；连接失败显示错误，不伪造成功。真实样本待确认。</td><td>先核对契约样本，再分别验证页面与真实服务器，尚未执行。</td></tr></tbody></table></div><h3>契约</h3><div class="table-wrap"><table><thead><tr><th>标识</th><th>负责人</th><th>状态</th><th>契约定义</th><th>证据</th></tr></thead><tbody><tr><td>CON-STATUS</td><td>M2</td><td>proposed</td><td>development-ready.md 第5节：请求/结果/错误等字段待确认；未提供实际接口。</td><td>synthetic-input.md 仅为抽象需求，无实现证据。</td></tr></tbody></table></div><h3>任务</h3><h4>DEV-1 澄清请求与结果契约</h4><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>目标</td><td>补足可验收材料，不执行真实业务</td></tr><tr><td>范围</td><td><ul><li>补齐真实目标、权限及错误/状态样本</li></ul></td></tr><tr><td>非目标</td><td><ul><li>真实业务实现或部署</li></ul></td></tr><tr><td>需求</td><td><ul><li>REQ-F1</li></ul></td></tr><tr><td>验收</td><td><ul><li>AC-1</li></ul></td></tr><tr><td>契约</td><td><ul><li>CON-STATUS</li></ul></td></tr><tr><td>前置任务</td><td>无</td></tr><tr><td>负责人</td><td>M2</td></tr><tr><td>已确认职责</td><td>backend</td></tr><tr><td>协作者</td><td>无</td></tr><tr><td>所属切片</td><td>SLICE-1</td></tr></tbody></table></div><h4>DEV-2 准备页面对接验收</h4><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>目标</td><td>补足可验收材料，不执行真实业务</td></tr><tr><td>范围</td><td><ul><li>按确认契约准备正常与失败场景</li></ul></td></tr><tr><td>非目标</td><td><ul><li>真实业务实现或部署</li></ul></td></tr><tr><td>需求</td><td><ul><li>REQ-F1</li></ul></td></tr><tr><td>验收</td><td><ul><li>AC-1</li></ul></td></tr><tr><td>契约</td><td><ul><li>CON-STATUS</li></ul></td></tr><tr><td>前置任务</td><td><ul><li>DEV-1</li></ul></td></tr><tr><td>负责人</td><td>M1</td></tr><tr><td>已确认职责</td><td>frontend</td></tr><tr><td>协作者</td><td>无</td></tr><tr><td>所属切片</td><td>SLICE-2</td></tr></tbody></table></div><h3>切片与授权</h3><h4>SLICE-1 </h4><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>任务</td><td><ul><li>DEV-1</li></ul></td></tr><tr><td>材料就绪度</td><td>not_ready</td></tr><tr><td>阻塞</td><td><ul><li>BLK-001：实际目标、契约和验收样本不足</li></ul></td></tr><tr><td>条件</td><td>无</td></tr><tr><td>已授权</td><td>否</td></tr><tr><td>联调负责人</td><td>M2</td></tr><tr><td>验收负责人</td><td>M1</td></tr></tbody></table></div><h4>SLICE-2 </h4><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>任务</td><td><ul><li>DEV-2</li></ul></td></tr><tr><td>材料就绪度</td><td>not_ready</td></tr><tr><td>阻塞</td><td><ul><li>BLK-001：实际目标、契约和验收样本不足</li></ul></td></tr><tr><td>条件</td><td>无</td></tr><tr><td>已授权</td><td>否</td></tr><tr><td>联调负责人</td><td>M2</td></tr><tr><td>验收负责人</td><td>M1</td></tr></tbody></table></div></main>
+  </div>
+</body>
+</html>

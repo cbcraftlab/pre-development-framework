@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/pre-development-framework/interaction-catalog.schema.json",
+  "title": "Module Interaction Catalog",
+  "type": "object",
+  "required": ["interactions"],
+  "properties": {
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "interaction_id", "business_flow", "intent", "orchestrator", "caller", "provider",
+          "operation", "mode", "input", "output", "state_change", "transaction_boundary",
+          "idempotency", "timeout", "retry", "ordering", "failure", "compensation",
+          "permission", "compatibility", "observability", "contract_owner", "reviewers", "status"
+        ],
+        "properties": {
+          "interaction_id": { "type": "string", "pattern": "^INT-" },
+          "business_flow": { "type": "string", "pattern": "^FLOW-" },
+          "intent": { "type": "string" },
+          "orchestrator": { "type": "string" },
+          "caller": { "type": "string" },
+          "provider": { "type": "string" },
+          "operation": { "type": "string" },
+          "mode": { "enum": ["synchronous-command", "synchronous-query", "asynchronous-event", "batch", "manual-handoff"] },
+          "input": { "type": "array" },
+          "output": { "type": "array" },
+          "state_change": { "type": "string" },
+          "transaction_boundary": { "type": "string" },
+          "idempotency": {
+            "type": "object",
+            "required": ["required", "key", "duplicate_behavior"],
+            "properties": {
+              "required": { "type": "boolean" },
+              "key": { "type": "string" },
+              "duplicate_behavior": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "timeout": { "type": "string" },
+          "retry": { "type": "string" },
+          "ordering": { "type": "string" },
+          "failure": { "type": "string" },
+          "compensation": { "type": "string" },
+          "permission": { "type": "string" },
+          "compatibility": { "type": "string" },
+          "observability": { "type": "string" },
+          "contract_owner": { "type": "string" },
+          "reviewers": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["draft", "proposed", "confirmed", "superseded", "blocked"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

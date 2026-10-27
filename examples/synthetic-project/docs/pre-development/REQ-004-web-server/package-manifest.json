@@ -1,0 +1,75 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "SYNTHETIC-TASK-TOOL",
+  "package_id": "REQ-004",
+  "package_slug": "web-server",
+  "package_version": "0.1.0",
+  "mode": "new",
+  "route": "complete",
+  "route_reason": "新请求状态、连接失败及重复请求的后果未确认，完整分析受影响边界。",
+  "baseline_status": "candidate",
+  "readiness": "not_ready",
+  "development_scope": "none",
+  "package_path": "docs/pre-development/REQ-004-web-server",
+  "baseline_refs": [],
+  "source_policy": {
+    "inheritance_mode": "deny-unless-explicit",
+    "authoritative_sources": [
+      "SRC-001"
+    ],
+    "supporting_sources": [],
+    "excluded_sources": []
+  },
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "kind": "normative",
+      "locator": "synthetic-input.md",
+      "revision": "fixture-v1",
+      "checked_at": "2026-10-27",
+      "scope": "虚构 Web 端与服务器结构示意",
+      "invalidated_by": "目标、契约或示意范围变化"
+    }
+  ],
+  "authorized_work": [],
+  "entrypoints": [
+    "docs/pre-development/index.md"
+  ],
+  "primary_artifact": "development-ready.md",
+  "context_artifact": "project-context.json",
+  "plan_artifact": "delivery-plan.json",
+  "readable_artifact": "development-ready.html",
+  "complex_relationships": true,
+  "diagrams": [
+    {
+      "source": "architecture.mmd",
+      "image": "architecture.svg",
+      "evidence": "虚构结构图与 COMM-001 对应，无实际运行证据。"
+    }
+  ],
+  "clarification_closures": [
+    {
+      "question_id": "Q-001",
+      "answer_source": "SRC-001",
+      "affected_ids": [
+        "REQ-F1",
+        "CON-STATUS",
+        "AC-1"
+      ],
+      "updated_ids": [
+        "REQ-F1",
+        "CON-STATUS",
+        "AC-1"
+      ]
+    }
+  ],
+  "artifacts": [
+    "development-ready.md",
+    "development-ready.html",
+    "project-context.json",
+    "delivery-plan.json",
+    "synthetic-input.md",
+    "architecture.mmd",
+    "architecture.svg"
+  ]
+}

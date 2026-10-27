@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240" role="img" aria-labelledby="title desc">
+<title id="title">虚构 Web 端与服务器的关系示意</title>
+<desc id="desc">Web 端通过待确认的 CON-STATUS 请求服务器，根据明确结果或错误展示状态。不包含任何真实业务。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2563eb"/></marker></defs>
+<rect width="900" height="240" fill="#fff"/>
+<g font-family="sans-serif" fill="#172033" text-anchor="middle">
+<rect x="40" y="65" width="230" height="100" rx="12" fill="#eef4ff" stroke="#2563eb"/>
+<rect x="630" y="65" width="230" height="100" rx="12" fill="#eef4ff" stroke="#2563eb"/>
+<text x="155" y="105" font-size="22">Web 端</text><text x="155" y="140" font-size="18">MOD-WEB</text>
+<text x="745" y="105" font-size="22">服务器</text><text x="745" y="140" font-size="18">MOD-SERVER</text>
+<g stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M270 90 H625"/><path d="M630 145 H275"/></g>
+<text x="450" y="65" font-size="17">COMM-001 / CON-STATUS 请求</text><text x="450" y="177" font-size="17">明确结果或错误</text>
+<text x="450" y="220" font-size="16">虚构结构示意；契约待确认，材料未就绪</text>
+</g></svg>

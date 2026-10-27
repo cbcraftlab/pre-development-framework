@@ -1,0 +1,419 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "package-manifest",
+  "type": "object",
+  "properties": {
+    "framework_version": {
+      "type": "string",
+      "enum": [
+        "0.10.0-candidate.1",
+        "0.10.0-candidate.2"
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "package_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "package_slug": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "package_version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "new",
+        "enhancement",
+        "delta"
+      ]
+    },
+    "route": {
+      "type": "string",
+      "enum": [
+        "light",
+        "standard",
+        "complete"
+      ]
+    },
+    "route_reason": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "baseline_status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "approved",
+        "superseded"
+      ]
+    },
+    "readiness": {
+      "type": "string",
+      "enum": [
+        "not_assessed",
+        "ready",
+        "conditionally_ready",
+        "not_ready",
+        "invalid_input"
+      ]
+    },
+    "development_scope": {
+      "type": "string",
+      "enum": [
+        "none",
+        "bounded",
+        "full"
+      ]
+    },
+    "package_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "baseline_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "package_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reused_items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "package_id",
+          "version",
+          "locator",
+          "reused_items"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "source_policy": {
+      "type": "object",
+      "properties": {
+        "inheritance_mode": {
+          "const": "deny-unless-explicit",
+          "type": "string"
+        },
+        "authoritative_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "supporting_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "excluded_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "inheritance_mode",
+        "authoritative_sources",
+        "supporting_sources",
+        "excluded_sources"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "normative",
+              "observed"
+            ]
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "checked_at": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "invalidated_by": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "source_id",
+          "kind",
+          "locator",
+          "revision",
+          "checked_at",
+          "scope",
+          "invalidated_by"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "authorized_work": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "entrypoints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "primary_artifact": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "context_artifact": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "plan_artifact": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "readable_artifact": {
+      "type": "string"
+    },
+    "readable_waiver": {
+      "type": "object",
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "tool",
+        "evidence",
+        "owner"
+      ],
+      "additionalProperties": false
+    },
+    "complex_relationships": {
+      "type": "boolean"
+    },
+    "diagrams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "image": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "source",
+          "image",
+          "evidence"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "clarification_closures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "answer_source": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "affected_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "updated_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "question_id",
+          "answer_source",
+          "affected_ids",
+          "updated_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 3,
+      "uniqueItems": true
+    },
+    "readable_title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "framework_version",
+    "project_id",
+    "package_id",
+    "package_slug",
+    "package_version",
+    "mode",
+    "route",
+    "route_reason",
+    "baseline_status",
+    "readiness",
+    "development_scope",
+    "package_path",
+    "baseline_refs",
+    "source_policy",
+    "sources",
+    "authorized_work",
+    "entrypoints",
+    "primary_artifact",
+    "context_artifact",
+    "plan_artifact",
+    "readable_artifact",
+    "complex_relationships",
+    "diagrams",
+    "clarification_closures",
+    "artifacts"
+  ],
+  "additionalProperties": false
+}

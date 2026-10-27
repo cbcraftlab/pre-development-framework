@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/pre-development-framework/package-manifest.schema.json",
+  "title": "Development Ready Package Manifest",
+  "type": "object",
+  "required": [
+    "framework_version",
+    "package_id",
+    "package_slug",
+    "package_version",
+    "route",
+    "baseline_status",
+    "readiness",
+    "development_scope",
+    "project_root",
+    "package_path",
+    "source_policy",
+    "open_blockers",
+    "open_conditions",
+    "authorized_work",
+    "approval",
+    "entrypoints",
+    "primary_artifact",
+    "clarification_closures",
+    "artifacts"
+  ],
+  "properties": {
+    "framework_version": { "type": "string", "minLength": 1 },
+    "package_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+    },
+    "package_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "package_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "route": {
+      "type": "string",
+      "enum": ["light", "standard", "complete"]
+    },
+    "baseline_status": {
+      "type": "string",
+      "enum": ["candidate", "approved", "superseded"]
+    },
+    "readiness": {
+      "type": "string",
+      "enum": ["not_assessed", "ready", "conditionally_ready", "not_ready", "invalid_input"]
+    },
+    "development_scope": {
+      "type": "string",
+      "enum": ["none", "bounded", "full"]
+    },
+    "project_root": { "type": "string", "pattern": "^/" },
+    "package_path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "source_policy": {
+      "type": "object",
+      "required": ["inheritance_mode", "authoritative_sources", "supporting_sources", "excluded_sources"],
+      "properties": {
+        "inheritance_mode": { "type": "string", "const": "deny-unless-explicit" },
+        "authoritative_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^(SRC|USR)-[A-Z0-9-]+$" }
+        },
+        "supporting_sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^SRC-[A-Z0-9-]+$" }
+        },
+        "excluded_sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^SRC-[A-Z0-9-]+$" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "open_blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^BLK-[A-Z0-9-]+$" }
+    },
+    "open_conditions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^COND-[A-Z0-9-]+$" }
+    },
+    "authorized_work": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "approval": {
+      "type": "object",
+      "required": ["approved_by", "approved_at"],
+      "properties": {
+        "approved_by": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "approved_at": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": ["readme", "current_state"],
+      "properties": {
+        "readme": { "type": "string", "const": "README.md" },
+        "current_state": { "type": "string", "const": "docs/00-current-state.md" }
+      },
+      "additionalProperties": false
+    },
+    "primary_artifact": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "readable_artifact": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+\\.html$"
+    },
+    "clarification_closures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question_id", "decision_id", "impacted_ids", "updated_ids"],
+        "properties": {
+          "question_id": { "type": "string", "pattern": "^Q-[A-Z0-9-]+$" },
+          "decision_id": { "type": "string", "pattern": "^(DEC|USR)-[A-Z0-9-]+$" },
+          "impacted_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "updated_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+      }
+    }
+  },
+  "additionalProperties": false
+}

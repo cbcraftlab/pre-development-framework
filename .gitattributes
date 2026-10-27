@@ -1,0 +1,7 @@
+# Stable source bytes are part of derived-document fingerprints on every OS.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary

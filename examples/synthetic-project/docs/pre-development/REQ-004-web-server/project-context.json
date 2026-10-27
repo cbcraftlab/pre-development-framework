@@ -1,0 +1,30 @@
+{
+  "framework_version": "0.10.0-candidate.2",
+  "project_id": "SYNTHETIC-TASK-TOOL",
+  "assignment_policy": "fixed",
+  "hard_constraints": [],
+  "preferences": [],
+  "team": [
+    {
+      "member_id": "M1",
+      "confirmed_responsibilities": [
+        "frontend"
+      ],
+      "availability": "未确定，虚构示例",
+      "capabilities": []
+    },
+    {
+      "member_id": "M2",
+      "confirmed_responsibilities": [
+        "backend",
+        "review"
+      ],
+      "availability": "未确定，虚构示例",
+      "capabilities": []
+    }
+  ],
+  "suggested_changes": [],
+  "unknowns": [
+    "真实业务目标、接口与结果、权限及重试副作用尚未确认。"
+  ]
+}
